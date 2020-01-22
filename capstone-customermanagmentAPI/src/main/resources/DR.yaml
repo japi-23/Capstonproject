@@ -1,0 +1,4 @@
+http:
+  port: "8087"
+  host: "localhost"
+  env: "DR"

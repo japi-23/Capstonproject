@@ -1,0 +1,4 @@
+http:
+  port: "8086"
+  host: "localhost"
+  env: "test"

@@ -1,0 +1,4 @@
+http:
+  port: "8089"
+  host: "localhost"
+  env: "prod"

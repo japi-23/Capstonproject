@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="implimentation-ws-test-suite.xml" />
+	<munit:test name="implimentation-ws-test-suite-GetAllUserFlowTest" doc:id="9ad7f21c-56c4-4a34-9c97-f197f031a077" description="Test">
+		<munit:behavior>
+			<ee:transform doc:name="Transform Message" doc:id="87226217-2bf7-47b7-9d53-373bbdb94bfc" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+               {
+                  "ID": 1,
+                  "first": "adam",
+                  "last": "henny",
+                  "department": "Mule Developer"
+                },
+                {"ID": 2,
+                  "first": "Yemisrach",
+                  "last": "Bogale",
+                  "department": "Mule Developer"
+
+                }
+                ]]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="c3f0c6d0-d2c6-40d6-be00-2b918c6d6a3a" />
+			<flow-ref doc:name="Flow-ref to GetAllUserFlow" doc:id="5e66c40e-2c52-41a1-90a8-47b4fbccefce" name="GetAllUserFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bc1d0b16-c6b3-4830-8f17-82a9741ddd56" message='#["payload is null"]' expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-ws-test-suite-GetSingleUserFlowTest" doc:id="5b7a2aa4-2412-4992-825c-d58cdcbe75be" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform Message" doc:id="c60c333c-eaee-413c-8c92-206667530278" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+       {
+                  "ID": 129,
+                  "first": "Henok",
+                  "last": "Getachew",
+                  "department": "System Admin"
+                }
+    ]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="0d0939fd-48f3-465e-863e-d3fe0356c314" >
+				<munit:attributes value="#[{uriParams : {ID: 129 }}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to GetSingleUserFlow" doc:id="3ca15ae1-cb55-4934-bfdf-c7359940c6bf" name="GetSingleUserFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d0b03d67-eead-45cf-8051-d2cfc60680c3" message='#["User not found"]' expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-ws-test-suite-CreateUserFlowTest" doc:id="b2dcdf3b-64c5-4ce1-8e65-433fa3735b47" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform Message" doc:id="1ac85ff6-9518-4662-9d9f-f19be5d25b57" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+       {
+                 
+                  "first": "Henok",
+                  "last": "Getachew",
+                  "departement": "System Admin"
+                }
+    
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a1f00b9f-97ff-478c-ba86-b5fd1a14d6f7" />
+			<flow-ref doc:name="Flow-ref to CreateUserFlow" doc:id="6cc61976-75e8-4130-9be7-74e0ba6b45c7" name="CreateUserFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="685bacf5-ef96-4a42-8d72-8372f31184df" message='#["user not created"]' expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-ws-test-suite-updateUserFlowTest" doc:id="0e869ee5-7cf8-4f35-b7f9-fa5ffa545aeb" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform Message" doc:id="fca4806c-4cf8-46bd-b64d-faae0b3d825c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+       {
+                  "ID": 3,
+                  "first": "Henok",
+                  "last": "Getachew",
+                  "departement": "System Admin"
+                }
+    ]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a107b62f-8672-4492-9a42-43cf0085d3ee" >
+				<munit:payload value="#[payload]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to updateUserFlow" doc:id="1bcee232-773c-49e7-8d2d-43a2a1c9e9ba" name="updateUserFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b6c12d09-0cd7-4071-a60f-db0a2c8f64d8" message='#["not authorized to make update"]' expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-ws-test-suite-DeletUserFlowTest" doc:id="1ac62c35-0c9e-4e0e-882e-a75e5ca65092" description="Test">
+		<munit:behavior >
+			<ee:transform doc:name="Transform Message" doc:id="75ee190e-830e-4617-a059-ad1282357b3f" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+                  "ID": 392,
+                  "first": "Henok",
+                  "last": "Getachew",
+                  "department": "System Admin"
+                }
+    ]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ef203692-c2b7-49c0-ac7c-31d847b8505d" >
+				<munit:attributes value="#[{uriParams : {ID: 392 }}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to DeletUserFlow" doc:id="30ccff09-ea5a-4fa6-b013-c530f5a8619b" name="DeletUserFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="cf12e1b3-adbb-4c28-83e4-abf449d64081" message='#["user not deleted "]' is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
